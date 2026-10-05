@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Self-Healing Fleet Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head><body>
+<header class="top">
+  <div class="brand"><b>Self-healing fleet</b><span>No central controller. Vehicles bid, yield and recover on their own.</span></div>
+  <nav class="tabs" role="tablist">
+    <button class="tab on" data-view="live">Live map</button>
+    <button class="tab" data-view="analytics">Coordination &amp; analytics</button>
+  </nav>
+  <div class="ctl">
+    <button id="bRun" class="primary">Start</button>
+    <button id="bStep">Step</button>
+    <select id="speed" aria-label="Speed"><option value="1100">Slow</option><option value="650" selected>Normal</option><option value="250">Fast</option></select>
+    <select id="scenario" aria-label="Scenario"><option value="0">Scripted demo</option><option value="1">Random fleet</option></select>
+    <button id="bReset">Reset</button>
+    <button id="bFail" class="danger">Fail V3</button>
+    <button id="bAdd" class="accent">Add task</button>
+  </div>
+</header>
+<div id="banner" class="banner" hidden></div>
+
+<main id="live" class="view">
+  <div class="left">
+    <section class="card mapcard">
+      <svg id="map" viewBox="0 0 300 300" aria-label="Fleet map"></svg>
+      <div id="toasts" class="toasts" aria-live="polite"></div>
+      <div class="legend"></div>
+    </section>
+    <section class="card"><h2>Agent communication</h2><ol id="feed" class="feed"></ol></section>
+  </div>
+  <aside class="right">
+    <section class="card"><h2>Vehicles <small id="tickLbl"></small></h2><div id="fleet" class="fleet"></div><div id="selPanel"></div></section>
+    <section class="card"><h2>Tasks</h2><div id="tasks" class="tasks"></div></section>
+  </aside>
+</main>
+
+<main id="analytics" class="view" hidden>
+  <div id="metrics" class="metrics"></div>
+  <div class="two">
+    <section class="card"><h2>Deliveries completed</h2><svg id="ch1" class="chart" viewBox="0 0 400 140" preserveAspectRatio="none"></svg></section>
+    <section class="card"><h2>Average fleet battery</h2><svg id="ch2" class="chart" viewBox="0 0 400 140" preserveAspectRatio="none"></svg></section>
+  </div>
+  <section class="card"><h2>Task allocation (Contract Net auctions)</h2><div class="scroll"><table id="auctions"></table></div></section>
+  <section class="card"><h2>Communication log</h2><div id="chips" class="chips"></div><ol id="fullLog" class="feed tall"></ol></section>
+</main>
+
+<dialog id="dlg"><form method="dialog" id="taskForm">
+  <h2>New delivery task</h2>
+  <p class="hint">The task is auctioned to the fleet immediately. Coordinates are on the 300 × 300 grid.</p>
+  <div class="row"><label>Pickup x<input name="px" type="number" min="0" max="300" required></label><label>y<input name="py" type="number" min="0" max="300" required></label></div>
+  <div class="row"><label>Dropoff x<input name="dx" type="number" min="0" max="300" required></label><label>y<input name="dy" type="number" min="0" max="300" required></label></div>
+  <label>Priority<select name="pr"><option>high</option><option selected>normal</option><option>low</option></select></label>
+  <div class="row end"><button type="button" id="tfPick">Pick on map</button><button type="button" id="tfRand">Random route</button><button type="button" id="tfCancel">Cancel</button><button class="accent" value="ok">Create task</button></div>
+</form></dialog>
+<script src="app.js"></script>
+</body></html>
